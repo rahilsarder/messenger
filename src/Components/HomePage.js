@@ -9,36 +9,19 @@ function HomePage() {
 	const route = useNavigate();
 	const [data, setData] = useState([]);
 
-	const arr = ['rahil', 'sarder', 'bablu']
-	const arr2 = [
-		{'Name': "Rahil"},
-		{'Name': "Sarder"},
-		{'Name': "Bablu"},
-	]
+	const getData = async (e) => {
+		e.preventDefault();
+		await fetch("http://localhost:8000/comments")
+			.then((res) => {
+				return res.json();
+			})
+			.then((result) => {
+				console.log(result);
+				setData(result);
+				console.log(data);
+			});
+	};
 
-	// const getData = async () => {
-	// 	const response = await fetch(
-	// 		"https://messenger-cf12a-default-rtdb.firebaseio.com/Rahil.json"
-	// 	);
-	// 	const result = await response.json()
-	// 	console.log(result);
-	// 	setData(result, [...data])
-	// 	console.log(data)
-	// };
-
-
-	const getData = async() => {
-	 await	 fetch('https://messenger-cf12a-default-rtdb.firebaseio.com/Rahil.json').then((res) => {
-			return	res.json()
-			
-		}).then((result) => {
-			console.log(result)
-			setData(result)
-			console.log(data)	
-		})
-	}
-
-	
 	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			route("/signin");
@@ -47,19 +30,6 @@ function HomePage() {
 		}
 	}, []);
 
-	useEffect(() => {
-		// data.map((element) => {
-		// 	return(
-		// 		<div>
-		// 			<li>
-		// 				{element}
-		// 			</li>
-		// 		</div>
-		// 	)
-		// })
-		getData()
-		console.log('state updated')
-	}, [])
 	return (
 		<div>
 			<NavBar />
@@ -68,21 +38,16 @@ function HomePage() {
 				Get Data
 			</Button>
 
-
 			<ul>
-				{
-					
-					data !== [] ? data.map((element) => {
-						return(
-							<div>
-								<li>
-									{element}
-								</li>
-							</div>
-						)
-					}) : null 
-					
-				}
+				{data.map((ele) => {
+					return (
+						<div>
+							<li key={ele.id}>
+								{ele.Name} Comment: {ele.Comment}
+							</li>
+						</div>
+					);
+				})}
 			</ul>
 		</div>
 	);
