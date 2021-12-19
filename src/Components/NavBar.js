@@ -1,13 +1,17 @@
 import React from "react";
 import { Nav, Navbar, NavDropdown, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./NavBar.css";
 
 function NavBar() {
+	const goodbye = () => toast("See You Soon!!", { theme: "dark" });
 	const route = useNavigate();
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		route("/signin");
+		goodbye();
 	};
 	return (
 		<div className="NavDiv">

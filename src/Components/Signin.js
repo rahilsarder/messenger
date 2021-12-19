@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+toast.configure();
+
 function Signin() {
+	const notify = () => toast.success("Welcome!!!!", { theme: "dark" });
 	const route = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -15,11 +20,13 @@ function Signin() {
 			const response = await axios.post(
 				`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}&email=${email}&password=${password}`
 			);
+			console.log(response);
 			localStorage.setItem("token", response.data.idToken);
-			{
-				response.data.idToken ? route("/") : route("/signin");
-			}
-			<Alert variant="success">Welcome</Alert>;
+			if (response.data.idToken) {
+				route("/");
+				notify();
+			} else route("/signin");
+			// <Alert severity="success">Welcome!!</Alert>;
 		} catch (error) {
 			alert(error);
 		}

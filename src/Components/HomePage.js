@@ -1,32 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
-import { Alert, Button } from "react-bootstrap";
-import { axios } from "axios";
-import { Ellipsis } from "react-bootstrap/esm/PageItem";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
+toast.configure();
 function HomePage() {
+	const notSignedIn = () =>
+		toast.warn("You are not Signed In!!", { theme: "dark" });
+	const fetchedData = () =>
+		toast.success("Data Fetched", {
+			position: toast.POSITION.BOTTOM_LEFT,
+			autoClose: 1000,
+			theme: "dark",
+		});
 	const route = useNavigate();
 	const [data, setData] = useState([]);
 
-	const getData = async (e) => {
-		e.preventDefault();
+	const getData = async () => {
 		await fetch("http://localhost:8000/comments")
 			.then((res) => {
 				return res.json();
 			})
 			.then((result) => {
-				console.log(result);
 				setData(result);
-				console.log(data);
+				fetchedData();
 			});
 	};
 
 	useEffect(() => {
+		getData();
+	}, []);
+
+	useEffect(() => {
 		if (!localStorage.getItem("token")) {
 			route("/signin");
-			// alert("Oops, you are not signed in!");
-			<Alert variant="danger">Oops, you are not signed in!</Alert>;
+			notSignedIn();
 		}
 	}, []);
 
@@ -34,21 +46,31 @@ function HomePage() {
 		<div>
 			<NavBar />
 			<h1>HomePage!</h1>
-			<Button variant="primary" onClick={getData}>
+			{/* <Button variant="primary" onClick={getData}>
 				Get Data
-			</Button>
+			</Button> */}
+			<Container maxWidth="lg">
+				<Box
+					sx={{
+						bgcolor: "#282c34",
+						height: "100vh",
+						marginTop: "50px",
+					}}
+				>
+					<CssBaseline />
 
-			<ul>
-				{data.map((ele) => {
-					return (
-						<div>
-							<li key={ele.id}>
-								{ele.Name} Comment: {ele.Comment}
-							</li>
-						</div>
-					);
-				})}
-			</ul>
+					{data.map((ele) => {
+						return (
+							<div key={ele.id}>
+								<li key={ele.id}>
+									{ele.Name} Comment:
+									{ele.Comment}
+								</li>
+							</div>
+						);
+					})}
+				</Box>
+			</Container>
 		</div>
 	);
 }
