@@ -2,6 +2,7 @@ import "./App.css";
 import HomePage from "./Components/HomePage";
 import Signin from "./Components/Signin";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignUp from "./Components/SignUp";
 
 function App() {
 	return (
@@ -10,7 +11,7 @@ function App() {
 				<Routes>
 					<Route exact path="/" element={<HomePage />} />
 					<Route path="/signin" element={<Signin />} />
-					<Route />
+					<Route path="/signup" element={<SignUp />} />
 				</Routes>
 			</Router>
 		</div>

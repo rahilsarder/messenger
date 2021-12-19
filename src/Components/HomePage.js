@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { Grid } from "@mui/material";
 
 toast.configure();
 function HomePage() {
@@ -49,28 +50,36 @@ function HomePage() {
 			{/* <Button variant="primary" onClick={getData}>
 				Get Data
 			</Button> */}
-			<Container maxWidth="lg">
-				<Box
-					sx={{
-						bgcolor: "#282c34",
-						height: "100vh",
-						marginTop: "50px",
-					}}
-				>
-					<CssBaseline />
+			<Grid container spacing={2}>
+				<Grid item xs={2}>
+					<Container maxWidth="sm"></Container>
+				</Grid>
+				<Grid item xs={8}>
+					<Container maxWidth="lg">
+						<Box
+							sx={{
+								bgcolor: "#282c34",
+								height: "100vh",
+								marginTop: "50px",
+							}}
+						>
+							<CssBaseline />
 
-					{data.map((ele) => {
-						return (
-							<div key={ele.id}>
-								<li key={ele.id}>
-									{ele.Name} Comment:
-									{ele.Comment}
-								</li>
-							</div>
-						);
-					})}
-				</Box>
-			</Container>
+							{data.map((ele) => {
+								return (
+									<div key={ele.id}>
+										<li key={ele.id}>
+											{ele.Name} Comment:
+											{ele.Comment}
+										</li>
+									</div>
+								);
+							})}
+						</Box>
+					</Container>
+				</Grid>
+				<Grid item xs={2}></Grid>
+			</Grid>
 		</div>
 	);
 }
